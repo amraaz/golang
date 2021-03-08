@@ -53,7 +53,6 @@ func main(){
 
 	var root string
 	var listxt string
-s
 	
 	lis = listfile(root)
 
