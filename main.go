@@ -60,5 +60,5 @@ func main(){
 		listxt = checktxt(a,g)
 		listxtfile = append(listxtfile, listxt)
 	}
-	fmt.Println(listxtfile)
+	// fmt.Println(listxtfile)
 }
