@@ -54,6 +54,9 @@ func main(){
 	var root string
 	var listxt string
 	
+    fmt.Println("Enter path : ")
+    fmt.Scanln(&root)
+
 	lis = listfile(root)
 
 	for g,a := range lis {
