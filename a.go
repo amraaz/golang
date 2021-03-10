@@ -1,14 +1,8 @@
 package main 
-// package reply-challenges
 
-import (
-	"fmt"
-	"io/ioutil"
-    "log"
-    // "os"
-    "path/filepath"
-)
-// loops through a list of files and direccotrise
+import ( "bufio"; "fmt"; "io/ioutil" ; "log"; "os"; "path/filepath" )
+
+// loops through a list of files and directories
 func listfile(root string) []string{
     var txtlist []string
     var list string
@@ -25,24 +19,54 @@ func listfile(root string) []string{
     return txtlist
 }
 
-// checks wether any files that is passed from listfile() is a extfile
-func checktxt(file string, num int) string{
+// checks wether any files that is passed from listfile() is a textfile
+func checktxt(file string) (string, bool) {
     var txt string
+    var g bool
+    g = false
     // fmt.Println(file)
     extension := filepath.Ext(file)
     if (extension == ".txt") {
-        fmt.Println("file :",file," is a text file"," file no. : ",num)
+        fmt.Println("file :",file," is a text file")
         txt = file
+        // g is true if passed file is a text file
+        g = true
+        // returns the passed argument only if it has a ".txt" extension
+        return txt , g
     }
     // return extension, file
-    return txt
+    // g is returned false
+    return txt, g
 }
 
-// func readfile() {
+// reads the contents of text files from the passed argument
+func readfiles(content string) []string {
+    var lis[] string
+    // gets current working directory, should be removed after debugging
+    path, err := os.Getwd()
+    if err != nil {
+        log.Println(err)
+    }
+    fmt.Println(path) 
 	// this is the array to which the list of numbers(log statements)
 	// var lis[] string
 
-// }
+    var file, error = os.OpenFile(content, os.O_RDONLY, 0644)
+    if (error != nil) {
+        fmt.Println("Error in reading file")
+    }
+
+    scanner := bufio.NewScanner(file)
+
+    for scanner.Scan() {
+        // fmt.Println(scanner.Text())
+        lis = append(lis, scanner.Text())
+    }
+    // close currently opened file 
+    defer file.Close()
+    // this is a list of the data found in the file, appended to an array
+    return lis
+}
 
 func main(){
 	// array of all directories, folders and files in userspecified path endpoint
@@ -53,15 +77,29 @@ func main(){
 
 	var root string
 	var listxt string
+    var f bool
 	
     fmt.Println("Enter path : ")
     fmt.Scanln(&root)
 
+    os.Chdir(root)
+    // newDir, _ := os.Getwd()
+    // fmt.Println(newDir)
 	lis = listfile(root)
 
-	for g,a := range lis {
-		listxt = checktxt(a,g)
-		listxtfile = append(listxtfile, listxt)
+	for _,a := range lis {
+		listxt , f = checktxt(a)
+        if (f==true){
+            listxtfile = append(listxtfile, listxt)   
+        }else {
+            if(f == false){
+                continue
+            }
+        }
 	}
-	// fmt.Println(listxtfile)
+
+    for _,g := range listxtfile{
+        readfiles(g)
+        fmt.Println(readfiles(g))
+    }
 }
